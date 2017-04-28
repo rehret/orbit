@@ -56,12 +56,14 @@ class celestial {
             y: c.position.y
         };
 
-        while (c.parent !== null) {
-            c = c.parent;
-            coords.x += c.position.x;
-            coords.y += c.position.y;
+        if (c.parent !== null) {
+            let parentCoords = celestial.getWorldCoords(c.parent);
+            coords.x += parentCoords.x;
+            coords.y += parentCoords.y;
+            return coords;
+        } else {
+            return coords;
         }
 
-        return coords;
     }
 }
