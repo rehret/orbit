@@ -16,6 +16,7 @@ mercuryObj.radius = 2.44e6;
 mercuryObj.position.y = mercuryObj.parent.radius + 5.791e10;
 mercuryObj.color = "#555555";
 objs.push(mercuryObj);
+sunObj.children.push(mercuryObj);
 
 let venusObj = new celestial();
 venusObj.parent = sunObj;
@@ -24,6 +25,7 @@ venusObj.radius = 6.052e6;
 venusObj.position.y = venusObj.parent.radius + 1.082e11;
 venusObj.color = "#DDFFAA";
 objs.push(venusObj);
+sunObj.children.push(venusObj);
 
 let earthObj = new celestial();
 earthObj.parent = sunObj;
@@ -32,6 +34,7 @@ earthObj.radius = 6.38e6;
 earthObj.position.y = earthObj.parent.radius + 1.496e11;
 earthObj.color = "#0033CC";
 objs.push(earthObj);
+sunObj.children.push(earthObj);
 
 let moonObj = new celestial();
 moonObj.parent = earthObj;
@@ -40,6 +43,7 @@ moonObj.radius = 1.737e6;
 moonObj.position.y = moonObj.parent.radius + 3.844e8;
 moonObj.color = "#777777";
 objs.push(moonObj);
+earthObj.children.push(moonObj);
 
 let ISSObj = new celestial();
 ISSObj.parent = moonObj;
@@ -47,6 +51,7 @@ ISSObj.radius = 54;
 ISSObj.position.y = ISSObj.parent.radius + 1e5;
 ISSObj.color = "#00CC77";
 objs.push(ISSObj);
+moonObj.children.push(ISSObj);
 
 let marsObj = new celestial();
 marsObj.parent = sunObj;
@@ -55,6 +60,7 @@ marsObj.radius = 3.39e6;
 marsObj.position.y = marsObj.parent.radius + 2.279e11;
 marsObj.color = "#DD3300";
 objs.push(marsObj);
+sunObj.children.push(marsObj);
 
 objs.forEach(obj => {
     if (obj.parent !== null) {
