@@ -1,5 +1,5 @@
 /// <reference path="./helpers/physics.ts" />
-/// <reference path="./classes/celestial.ts" />
+/// <reference path="./models/celestial.ts" />
 
 let objs = new Array<celestial>();
 
