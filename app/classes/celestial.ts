@@ -23,66 +23,17 @@ class celestial {
 
     update() {
         if (this.parent) {
-            let d = this.getDistance(this.parent);
-            let g = physics.getGravityAcceleration(this.parent.mass, d);
-
-            let parentGravityToDistanceRatio = g / d;
-
             // check if object should move "up" one physics grid
-            if (this.parent.parent) {
-                let grandparent = this.parent.parent;
-                let grandparentDistance = this.getDistance(grandparent);
-                let grandparentG = physics.getGravityAcceleration(grandparent.mass, grandparentDistance);
-
-                // decide to move up a grid if ratio G:distance is greater for grandparent
-                // basically, all descendants of the star will see the star as the highest G in the system
-                // so we use this ratio to find the effect of gravity on the celestial, biased towards
-                // the current parent
-                let grandparentGravityToDistanceRatio = grandparentG / grandparentDistance;
-
-                if (grandparentGravityToDistanceRatio > parentGravityToDistanceRatio) {
-                    this.position = this.position.add(this.parent.position);
-                    this.velocity = this.velocity.add(this.parent.velocity);
-                    this.parent.children.splice(this.parent.children.indexOf(this), 1);
-                    this.parent = this.parent.parent;
-                    this.parent.children.push(this);
-                    g = grandparentG;
-                    d = grandparentDistance;
-                }
+            if (this.shouldMoveUpOneGrid()) {
+                this.moveUpOneGrid();
             }
 
             // check if object should move "down" one physics grid
-            // parent has 1 child if `this` is the only child, so we want to see if there are others first
-            if (this.parent.children.length > 1) {
-                let maxGSibling = this.parent.children.filter(c => c !== this).reduce((accumulator: celestial, sibling: celestial) => {
-                    let siblingDistance = this.getDistance(sibling);
-                    let siblingG = physics.getGravityAcceleration(sibling.mass, siblingDistance);
-
-                    let accumulatorDistance = this.getDistance(accumulator);
-                    let accumulatorG = physics.getGravityAcceleration(accumulator.mass, accumulatorDistance);
-
-                    if (siblingG / siblingDistance > accumulatorG / accumulatorDistance) {
-                        return sibling;
-                    } else {
-                        return accumulator;
-                    }
-                });
-
-                if (maxGSibling) {
-                    let siblingDistance = this.getDistance(maxGSibling);
-                    let siblingG = physics.getGravityAcceleration(maxGSibling.mass, siblingDistance);
-
-                    if (siblingG / siblingDistance > parentGravityToDistanceRatio) {
-                        this.parent.children.splice(this.parent.children.indexOf(this), 1);
-                        this.parent = maxGSibling;
-                        this.parent.children.push(this);
-                        this.position = this.position.subtract(maxGSibling.position);
-                        this.velocity = this.velocity.subtract(maxGSibling.velocity);
-                        g = siblingG;
-                        d = siblingDistance;
-                    }
-                }
+            if (this.shouldMoveDownOneGrid()) {
+                this.moveDownOneGrid();
             }
+
+            let g = physics.getGravityAcceleration(this.parent.mass, this.getDistance(this.parent));
 
             // apply gravity
             let start = new THREE.Vector3(this.getWorldCoords().x, this.getWorldCoords().y, 0);
@@ -94,6 +45,68 @@ class celestial {
 
             this.position = this.position.add(this.velocity);
         }
+    }
+
+    private getGravityToDistanceRatio(c: celestial): number {
+        let distance = this.getDistance(c);
+        let g = physics.getGravityAcceleration(c.mass, distance);
+        return g / distance;
+    }
+
+    private shouldMoveUpOneGrid(): boolean {
+        if (this.parent && this.parent.parent) {
+            // decide to move up a grid if ratio G:distance is greater for grandparent
+            // basically, all descendants of the star will see the star as the highest G in the system
+            // so we use this ratio to find the effect of gravity on the celestial, biased towards
+            // the current parent
+            let grandparentGravityToDistanceRatio = this.getGravityToDistanceRatio(this.parent.parent);
+            let parentGravityToDistanceRatio = this.getGravityToDistanceRatio(this.parent);
+
+            return grandparentGravityToDistanceRatio > parentGravityToDistanceRatio;
+        }
+    }
+
+    private shouldMoveDownOneGrid(): boolean {
+        // parent has 1 child if `this` is the only child, so we want to see if there are others first
+        if (this.parent.children.length > 1) {
+            let maxGSibling = this.getMaxGRatioSibling();
+
+            if (maxGSibling && this.getGravityToDistanceRatio(maxGSibling) > this.getGravityToDistanceRatio(this.parent)) {
+                return true
+            }
+        }
+        return false;
+    }
+
+    private moveUpOneGrid() {
+        this.position = this.position.add(this.parent.position);
+        this.velocity = this.velocity.add(this.parent.velocity);
+        this.assignNewParent(this.parent.parent);
+    }
+
+    private moveDownOneGrid() {
+        let maxGSibling = this.getMaxGRatioSibling();
+        this.position = this.position.subtract(maxGSibling.position);
+        this.velocity = this.velocity.subtract(maxGSibling.velocity);
+        this.assignNewParent(maxGSibling);
+    }
+
+    private assignNewParent(parent: celestial) {
+        if (this.parent) {
+            this.parent.children.splice(this.parent.children.indexOf(this), 1);
+        }
+        this.parent = parent;
+        this.parent.children.push(this);
+    }
+
+    private getMaxGRatioSibling(): celestial {
+        return this.parent.children.filter(c => c !== this).reduce((accumulator: celestial, sibling: celestial) => {
+            if (this.getGravityToDistanceRatio(sibling) > this.getGravityToDistanceRatio(accumulator)) {
+                return sibling;
+            } else {
+                return accumulator;
+            }
+        });
     }
 
     getDistance(c: celestial) {
