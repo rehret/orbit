@@ -91,7 +91,7 @@ class celestial {
         this.assignNewParent(maxGSibling);
     }
 
-    private assignNewParent(parent: celestial) {
+    assignNewParent(parent: celestial) {
         if (this.parent) {
             this.parent.children.splice(this.parent.children.indexOf(this), 1);
         }
