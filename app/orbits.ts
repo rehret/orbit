@@ -126,14 +126,6 @@ window.addEventListener("load", () => {
     function render() {
         requestAnimationFrame(render);
 
-        objs.forEach(obj => {
-            let worldCoords = obj.getWorldCoords();
-            obj.mesh.position.x = worldCoords.x;
-            obj.mesh.position.y = worldCoords.y;
-            obj.dot.position.x = worldCoords.x;
-            obj.dot.position.y = worldCoords.y;
-        });
-
         let cameraPos = targetObj.getWorldCoords();
 
         camera.position.x = cameraPos.x;

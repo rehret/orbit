@@ -21,7 +21,7 @@ class celestial {
         this.radius = 0;
     }
 
-    update() {
+    public update() {
         if (this.parent) {
             // check if object should move "up" one physics grid
             if (this.shouldMoveUpOneGrid()) {
@@ -44,6 +44,12 @@ class celestial {
             this.velocity.y += gVector.y * g;
 
             this.position = this.position.add(this.velocity);
+
+            let worldCoords = this.getWorldCoords();
+            this.mesh.position.x = worldCoords.x;
+            this.mesh.position.y = worldCoords.y;
+            this.dot.position.x = worldCoords.x;
+            this.dot.position.y = worldCoords.y;
         }
     }
 
@@ -91,7 +97,7 @@ class celestial {
         this.assignNewParent(maxGSibling);
     }
 
-    assignNewParent(parent: celestial) {
+    public assignNewParent(parent: celestial) {
         if (this.parent) {
             this.parent.children.splice(this.parent.children.indexOf(this), 1);
         }
@@ -109,21 +115,21 @@ class celestial {
         });
     }
 
-    getDistance(c: celestial) {
+    public getDistance(c: celestial) {
         return celestial.getDistance(this, c);
     }
 
-    static getDistance(c1: celestial, c2: celestial): number {
+    public static getDistance(c1: celestial, c2: celestial): number {
         let c1Pos = c1.getWorldCoords();
         let c2Pos = c2.getWorldCoords();
         return Math.sqrt(Math.pow(c2Pos.x - c1Pos.x, 2) + Math.pow(c2Pos.y - c1Pos.y, 2));
     }
 
-    getWorldCoords(): pair {
+    public getWorldCoords(): pair {
         return celestial.getWorldCoords(this);
     }
 
-    static getWorldCoords(c: celestial): pair {
+    public static getWorldCoords(c: celestial): pair {
         let coords = <pair> {
             x: c.position.x,
             y: c.position.y
