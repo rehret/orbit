@@ -1,13 +1,14 @@
+/// <reference path="./models/game-state.ts" />
 /// <reference path="./helpers/physics.ts" />
 /// <reference path="./models/celestial.ts" />
 
-let objs = new Array<celestial>();
+let state = new GameState();
 
 let sunObj = new celestial();
 sunObj.mass = 1.989e30;
 sunObj.radius = 6.95e8;
 sunObj.color = "#FFFF00";
-objs.push(sunObj);
+state.Celestials.push(sunObj);
 
 let mercuryObj = new celestial();
 mercuryObj.assignNewParent(sunObj);
@@ -15,7 +16,7 @@ mercuryObj.mass = 3.285e23;
 mercuryObj.radius = 2.44e6;
 mercuryObj.position.y = mercuryObj.parent.radius + 5.791e10;
 mercuryObj.color = "#555555";
-objs.push(mercuryObj);
+state.Celestials.push(mercuryObj);
 
 let venusObj = new celestial();
 venusObj.assignNewParent(sunObj);
@@ -23,7 +24,7 @@ venusObj.mass = 4.867e24;
 venusObj.radius = 6.052e6;
 venusObj.position.y = venusObj.parent.radius + 1.082e11;
 venusObj.color = "#DDFFAA";
-objs.push(venusObj);
+state.Celestials.push(venusObj);
 
 let earthObj = new celestial();
 earthObj.assignNewParent(sunObj);
@@ -31,7 +32,7 @@ earthObj.mass = 5.98e24;
 earthObj.radius = 6.38e6;
 earthObj.position.y = earthObj.parent.radius + 1.496e11;
 earthObj.color = "#0033CC";
-objs.push(earthObj);
+state.Celestials.push(earthObj);
 
 let moonObj = new celestial();
 moonObj.assignNewParent(earthObj);
@@ -39,14 +40,14 @@ moonObj.mass = 7.34767309e22;
 moonObj.radius = 1.737e6;
 moonObj.position.y = moonObj.parent.radius + 3.844e8;
 moonObj.color = "#777777";
-objs.push(moonObj);
+state.Celestials.push(moonObj);
 
 let ISSObj = new celestial();
 ISSObj.assignNewParent(moonObj);
 ISSObj.radius = 54;
 ISSObj.position.y = ISSObj.parent.radius + 1e5;
 ISSObj.color = "#00CC77";
-objs.push(ISSObj);
+state.Celestials.push(ISSObj);
 
 let marsObj = new celestial();
 marsObj.assignNewParent(sunObj);
@@ -54,9 +55,9 @@ marsObj.mass = 6.39e23;
 marsObj.radius = 3.39e6;
 marsObj.position.y = marsObj.parent.radius + 2.279e11;
 marsObj.color = "#DD3300";
-objs.push(marsObj);
+state.Celestials.push(marsObj);
 
-objs.forEach(obj => {
+state.Celestials.forEach(obj => {
     if (obj.parent !== null) {
         obj.velocity.x = -physics.getCircularOrbitVelocity(obj.parent.mass, obj.getDistance(obj.parent));
     }
@@ -97,7 +98,7 @@ window.addEventListener("load", () => {
     scene.add(new THREE.AmbientLight(0xffffff, 0.01));
     scene.add(new THREE.PointLight(0xffffff, 1));
 
-    objs.forEach(obj => {
+    state.Celestials.forEach(obj => {
         scene.add(obj.mesh);
         scene.add(obj.dot);
     });
@@ -117,9 +118,7 @@ window.addEventListener("load", () => {
     let targetInterval = (1 / 30) * 1000;
     setInterval(() => {
         for (let i = 0; i < 1; i++) {
-            objs.forEach(obj => {
-                obj.update();
-            });
+            state.Update();
         }
     }, targetInterval);
 
