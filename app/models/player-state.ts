@@ -1,11 +1,11 @@
-/// <reference path="./celestial.ts" />
+/// <reference path="./ship.ts" />
 /// <reference path="../interfaces/iplayer-state.ts" />
 
 class PlayerState implements IPlayerState {
-    PlayerObject: celestial;
+    PlayerObject: ship;
 
     constructor() {
-        this.PlayerObject = new celestial();
+        this.PlayerObject = new ship();
     }
 
     Update(): PlayerState {

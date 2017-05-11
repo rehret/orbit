@@ -1,7 +1,7 @@
-/// <reference path="../models/celestial.ts" />
+/// <reference path="../models/ship.ts" />
 
 interface IPlayerState {
-    PlayerObject: celestial;
+    PlayerObject: ship;
 
     Update(): PlayerState
 }

@@ -1,6 +1,7 @@
 /// <reference path="./models/game-state.ts" />
 /// <reference path="./helpers/physics.ts" />
 /// <reference path="./models/celestial.ts" />
+/// <reference path="./models/ship.ts" />
 
 let state = new GameState();
 
@@ -42,6 +43,13 @@ moonObj.position.y = moonObj.parent.radius + 3.844e8;
 moonObj.color = "#777777";
 state.Celestials.push(moonObj);
 
+let playerObj = new ship();
+playerObj.assignNewParent(moonObj);
+playerObj.radius = 5;
+playerObj.position.y = playerObj.parent.radius + 25e3;
+playerObj.color = "#EEEEEE";
+state.Player.PlayerObject = playerObj;
+
 let ISSObj = new celestial();
 ISSObj.assignNewParent(moonObj);
 ISSObj.radius = 54;
@@ -81,6 +89,20 @@ state.Celestials.forEach(obj => {
     obj.dot.position.y = obj.getWorldCoords().y;
 });
 
+playerObj.velocity.x = -physics.getCircularOrbitVelocity(playerObj.parent.mass, playerObj.getDistance(playerObj.parent));
+let geometry = new THREE.SphereGeometry(playerObj.radius, 100, 50);
+let material = new THREE.MeshStandardMaterial({ color: playerObj.color, roughness: 0.75, metalness: 0 });
+playerObj.mesh = new THREE.Mesh(geometry, material);
+playerObj.mesh.position.x = playerObj.getWorldCoords().x;
+playerObj.mesh.position.y = playerObj.getWorldCoords().y;
+let dotGeometry = new THREE.Geometry();
+dotGeometry.vertices.push(new THREE.Vector3(0, 0, 0));
+let dotMaterial = new THREE.PointsMaterial({ color: playerObj.color, size: 1, sizeAttenuation: false });
+playerObj.dot = new THREE.Points(dotGeometry, dotMaterial);
+playerObj.dot.position.x = playerObj.getWorldCoords().x;
+playerObj.dot.position.y = playerObj.getWorldCoords().y;
+
+
 window.addEventListener("load", () => {
     let scene = new THREE.Scene();
     let camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1e100);
@@ -103,6 +125,9 @@ window.addEventListener("load", () => {
         scene.add(obj.dot);
     });
 
+    scene.add(state.Player.PlayerObject.mesh);
+    scene.add(state.Player.PlayerObject.dot);
+
     camera.position.z = marsObj.position.y * 1.5;
     window.addEventListener("mousewheel", event => {
         camera.position.z -= camera.position.z / (event.wheelDelta / 20);
@@ -113,7 +138,7 @@ window.addEventListener("load", () => {
         }
     });
 
-    let targetObj = ISSObj;
+    let targetObj = playerObj;
 
     let targetInterval = (1 / 30) * 1000;
     setInterval(() => {
