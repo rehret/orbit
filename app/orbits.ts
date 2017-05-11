@@ -134,14 +134,9 @@ window.addEventListener("load", () => {
     scene.add(state.Player.PlayerObject.mesh);
     scene.add(state.Player.PlayerObject.dot);
 
-    camera.position.z = marsObj.position.y * 1.5;
+    state.CameraZ = marsObj.position.y * 1.5;
     window.addEventListener("mousewheel", event => {
-        camera.position.z -= camera.position.z / (event.wheelDelta / 20);
-        if (camera.position.z > 1e13) {
-            camera.position.z = 1e13;
-        } else if (camera.position.z < targetObj.radius * 2) {
-            camera.position.z = targetObj.radius * 2;
-        }
+        state.CameraZoom(event.wheelDelta);
     });
 
     let targetObj = playerObj;
@@ -160,6 +155,7 @@ window.addEventListener("load", () => {
 
         camera.position.x = cameraPos.x;
         camera.position.y = cameraPos.y;
+        camera.position.z = state.CameraZ;
         camera.lookAt(new THREE.Vector3(cameraPos.x, cameraPos.y, 0));
 
         renderer.render(scene, camera);

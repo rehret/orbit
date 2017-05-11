@@ -18,8 +18,8 @@ class GameState {
         this.Player = this.Player.Update();
     }
 
-    CameraZoom(event) {
-        this.CameraZ -= this.CameraZ / (event.wheelDelta / 20);
+    CameraZoom(zoomAmount) {
+        this.CameraZ -= this.CameraZ / (zoomAmount / 20);
         if (this.CameraZ > 1e13) {
             this.CameraZ = 1e13;
         } else if (this.CameraZ < this.Player.PlayerObject.radius * 2) {
