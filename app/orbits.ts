@@ -90,8 +90,14 @@ state.Celestials.forEach(obj => {
 });
 
 playerObj.velocity.x = -physics.getCircularOrbitVelocity(playerObj.parent.mass, playerObj.getDistance(playerObj.parent));
-let geometry = new THREE.SphereGeometry(playerObj.radius, 100, 50);
-let material = new THREE.MeshStandardMaterial({ color: playerObj.color, roughness: 0.75, metalness: 0 });
+let geometry = new THREE.Geometry();
+geometry.vertices.push(
+    new THREE.Vector3( 0, 5, 0 ),
+    new THREE.Vector3( -5, -5, 0 ),
+    new THREE.Vector3( 5, -5, 0 )
+);
+geometry.faces.push( new THREE.Face3( 0, 1, 2) );
+let material = new THREE.MeshBasicMaterial({ color: playerObj.color });
 playerObj.mesh = new THREE.Mesh(geometry, material);
 playerObj.mesh.position.x = playerObj.getWorldCoords().x;
 playerObj.mesh.position.y = playerObj.getWorldCoords().y;
