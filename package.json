@@ -8,7 +8,6 @@
     "typescript": "^2.3.2"
   },
   "devDependencies": {
-    "typescript": "^2.0.10",
     "typings": "^2.0.0"
   },
   "scripts": {
