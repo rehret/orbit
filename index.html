@@ -14,8 +14,27 @@
             body {
                 margin: 0;
             }
+
+            .hud {
+                position: fixed;
+                font-size: 12px;
+                color: white;
+                font-family: sans-serif;
+            }
+
+            .velocity {
+                left: 10px;
+                bottom: 30px;
+            }
+
+            .velocity-in-c {
+                left: 10px;
+                bottom: 10px;
+            }
         </style>
     </head>
     <body>
+        <div id="velocity" class="hud velocity"></div>
+        <div id="velocity-in-c" class="hud velocity-in-c"></div>
     </body>
 </html>
