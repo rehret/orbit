@@ -20,6 +20,7 @@ class GameState {
         let velocity = Math.sqrt(Math.pow(this.Player.PlayerObject.velocity.x, 2) + Math.pow(this.Player.PlayerObject.velocity.y, 2));
         document.getElementById("velocity").innerText = `${velocity.toFixed(2)} m/s`;
         document.getElementById("velocity-in-c").innerText = `${(velocity / physics.C).toFixed(7)}c`;
+        document.getElementById("altitude").innerText = `Altitude: ${(this.Player.PlayerObject.getDistance(this.Player.PlayerObject.parent) - this.Player.PlayerObject.parent.radius).toFixed(0)}m`;
     }
 
     CameraZoom(zoomAmount) {
