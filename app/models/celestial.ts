@@ -6,6 +6,12 @@ class celestial {
     children: Array<celestial>;
     position: pair;
     velocity: pair;
+
+    /**
+     * Rotational velocity around the Z-axis in radians
+     * Positive values are counter-clockwise, negative are clockwise
+    */
+    rotationalVelocity: number;
     mass: number;
     radius: number;
     color: string;
@@ -17,6 +23,7 @@ class celestial {
         this.children = new Array<celestial>();
         this.position = new pair();
         this.velocity = new pair();
+        this.rotationalVelocity = 0;
         this.mass = 0;
         this.radius = 0;
     }
@@ -50,6 +57,8 @@ class celestial {
             this.mesh.position.y = worldCoords.y;
             this.dot.position.x = worldCoords.x;
             this.dot.position.y = worldCoords.y;
+
+            this.mesh.rotateZ(this.rotationalVelocity);
         }
     }
 

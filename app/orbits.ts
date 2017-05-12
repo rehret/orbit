@@ -93,8 +93,8 @@ playerObj.velocity.x = -physics.getCircularOrbitVelocity(playerObj.parent.mass, 
 let geometry = new THREE.Geometry();
 geometry.vertices.push(
     new THREE.Vector3( 0, 5, 0 ),
-    new THREE.Vector3( -5, -5, 0 ),
-    new THREE.Vector3( 5, -5, 0 )
+    new THREE.Vector3( -3, -5, 0 ),
+    new THREE.Vector3( 3, -5, 0 )
 );
 geometry.faces.push( new THREE.Face3( 0, 1, 2) );
 let material = new THREE.MeshBasicMaterial({ color: playerObj.color });
@@ -135,9 +135,9 @@ window.addEventListener("load", () => {
     scene.add(state.Player.PlayerObject.dot);
 
     state.CameraZ = marsObj.position.y * 1.5;
-    window.addEventListener("mousewheel", event => {
-        state.CameraZoom(event.wheelDelta);
-    });
+    window.addEventListener("mousewheel", event => state.CameraZoom(event.wheelDelta));
+    window.addEventListener("keydown", event => state.KeyDownHandler(event.keyCode));
+    window.addEventListener("keyup", event => state.KeyUpHandler(event.keyCode));
 
     let targetObj = playerObj;
 
@@ -156,6 +156,13 @@ window.addEventListener("load", () => {
         camera.position.x = cameraPos.x;
         camera.position.y = cameraPos.y;
         camera.position.z = state.CameraZ;
+
+        if (camera.position.z < 750) {
+            playerObj.mesh.position.z = 0;
+        } else {
+            playerObj.mesh.position.z = camera.position.z - 750;
+        }
+
         camera.lookAt(new THREE.Vector3(cameraPos.x, cameraPos.y, 0));
 
         renderer.render(scene, camera);

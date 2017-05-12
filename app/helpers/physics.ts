@@ -1,5 +1,6 @@
 namespace physics {
     const G = 6.67259e-11;
+    export const C = 299792458;
 
     export function getGravityAcceleration(mass: number, distance: number): number {
         return (G * mass) / Math.pow(distance, 2);
