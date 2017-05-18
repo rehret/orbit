@@ -1,4 +1,4 @@
-class keyboard {
+export class keyboard {
     static BACKSPACE: number = 8;
     static TAB: number = 9;
     static ENTER: number = 13;

@@ -1,9 +1,9 @@
-/// <reference path="../models/ship.ts" />
+import { ship } from "../models/ship"
 
-interface IPlayerState {
+export interface IPlayerState {
     PlayerObject: ship;
 
-    Update(): PlayerState
+    Update(): IPlayerState
 
     BeginCounterClockwiseRotation(): void
     BeginClockwiseRotation(): void

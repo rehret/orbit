@@ -1,7 +1,7 @@
-/// <reference path="./models/game-state.ts" />
-/// <reference path="./helpers/physics.ts" />
-/// <reference path="./models/celestial.ts" />
-/// <reference path="./models/ship.ts" />
+import { GameState } from "./models/game-state";
+import { physics } from "./helpers/physics";
+import { celestial } from "./models/celestial";
+import { ship } from "./models/ship";
 
 let state = new GameState();
 

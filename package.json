@@ -5,15 +5,24 @@
   "main": "index.js",
   "dependencies": {
     "three": "^0.85.2",
-    "typescript": "^2.3.2"
+    "ts-loader": "^2.0.3",
+    "typescript": "^2.3.2",
+    "webpack": "^2.5.1"
   },
   "devDependencies": {
-    "typings": "^2.0.0"
+    "css-loader": "^0.28.1",
+    "extract-text-webpack-plugin": "^2.1.0",
+    "node-sass": "^4.5.3",
+    "sass-loader": "^6.0.5",
+    "style-loader": "^0.17.0",
+    "typings": "^2.0.0",
+    "uglifyjs-webpack-plugin": "^0.4.3",
+    "webpack": "^2.5.1"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "tsc",
-    "build:watch": "tsc -w",
+    "build": "webpack --config webpack.prod.js",
+    "build:watch": "webpack --watch --config webpack.prod.js",
     "clean": "rm -rf dist/"
   },
   "author": "",

@@ -1,7 +1,7 @@
-/// <reference path="./pair.ts" />
-/// <reference path="../helpers/physics.ts" />
+import { pair } from "./pair";
+import { physics } from "../helpers/physics";
 
-class celestial {
+export class celestial {
     parent: celestial;
     children: Array<celestial>;
     position: pair;

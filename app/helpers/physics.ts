@@ -1,4 +1,4 @@
-namespace physics {
+export namespace physics {
     const G = 6.67259e-11;
     export const C = 299792458;
 

@@ -1,8 +1,8 @@
-/// <reference path="./ship.ts" />
-/// <reference path="../interfaces/iplayer-state.ts" />
-/// <reference path="../helpers/physics.ts" />
+import { ship } from "./ship";
+import { IPlayerState } from "../interfaces/iplayer-state";
+import { physics } from "../helpers/physics";
 
-class PlayerState implements IPlayerState {
+export class PlayerState implements IPlayerState {
     PlayerObject: ship;
 
     private turningSpeed = 0.05;

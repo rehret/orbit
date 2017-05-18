@@ -1,4 +1,4 @@
-class pair {
+export class pair {
     x: number;
     y: number;
 

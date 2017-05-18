@@ -1,9 +1,10 @@
-/// <reference path="../interfaces/iplayer-state.ts" />
-/// <reference path="./player-state.ts" />
-/// <reference path="./celestial.ts" />
-/// <reference path="../helpers/keyboard.ts" />
+import { IPlayerState } from "../interfaces/iplayer-state";
+import { PlayerState } from "./player-state";
+import { celestial } from "./celestial";
+import { physics } from "../helpers/physics";
+import { keyboard } from "../helpers/keyboard";
 
-class GameState {
+export class GameState {
     Player: IPlayerState;
     Celestials: Array<celestial>;
     CameraZ: number;

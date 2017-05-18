@@ -1,6 +1,6 @@
-/// <reference path="./celestial.ts" />
+import { celestial } from "./celestial";
 
-class ship extends celestial {
+export class ship extends celestial {
     constructor() {
         super();
     }
